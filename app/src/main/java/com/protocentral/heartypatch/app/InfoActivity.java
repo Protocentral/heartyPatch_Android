@@ -126,10 +126,18 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(40);
+        graph.getViewport().setBackgroundColor(Color.WHITE);
 
+        graph.getGridLabelRenderer().setGridColor(Color.GRAY);
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.WHITE);
+        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.WHITE);
+        graph.getGridLabelRenderer().setLabelVerticalWidth(100);
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Heart rate");
+        graph.getGridLabelRenderer().setVerticalAxisTitleColor(Color.WHITE);
         HRseries = new LineGraphSeries<>();
-        HRseries.setColor(Color.WHITE);
+        HRseries.setColor(Color.RED);
         graph.addSeries(HRseries);
+        HRseries.setThickness(2);
 
 
         Switch toggleLog = (Switch) findViewById(R.id.LogToggle);
@@ -176,10 +184,10 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_connected_settings) {
-
+        if (id == R.id.action_help) {
+            startHelp();
             return true;
-        } else if (id == R.id.action_refreshcache) {
+        }  else if (id == R.id.action_refreshcache) {
             if (mBleManager != null) {
                 mBleManager.refreshDeviceCache();
             }
@@ -188,9 +196,13 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
+    private void startHelp() {
+        // Launch app help activity
+        Intent intent = new Intent(this, CommonHelpActivity.class);
+        intent.putExtra("title", getString(R.string.info_help_title));
+        intent.putExtra("help", "info_help.html");
+        startActivity(intent);
+    }
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
@@ -407,16 +419,16 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
                 BatteryTextView.setText( String.format("%d",globalBattery));
 
                 TextView MeanRRTextView = (TextView) findViewById(R.id.MeanRRTextView);
-                MeanRRTextView.setText( String.format("%.2f",(globalMean/100)));
+                MeanRRTextView.setText( String.format("%.0f",(globalMean/100)));
 
                 TextView SDNNTextView = (TextView) findViewById(R.id.SDNNTextView);
-                SDNNTextView.setText( String.format("%.2f",(globalSDNN/100)));
+                SDNNTextView.setText( String.format("%.1f",(globalSDNN/100)));
 
                 TextView PNNTextView = (TextView) findViewById(R.id.PNNTextView);
-                PNNTextView.setText( String.format("%.2f",(globalPNN/100)));
+                PNNTextView.setText( String.format("%.1f",(globalPNN/100)));
 
                 TextView RMSSDTextView = (TextView) findViewById(R.id.RMSSDTextView);
-                RMSSDTextView.setText( String.format("%.2f",(globalRMSSD/100)));
+                RMSSDTextView.setText( String.format("%.1f",(globalRMSSD/100)));
 
             }
         });

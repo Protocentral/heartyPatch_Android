@@ -8,8 +8,8 @@ android {
         applicationId "com.protocentral.heartypatch"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "2.3.0"
+        versionCode 6
+        versionName "2.3"
     }
 
     useLibrary 'org.apache.http.legacy'     // TODO: remove Apache library and use HttpURLConnection (Apache is deprecated since Android 6.0)
@@ -33,12 +33,8 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'no.nordicsemi.android:dfu:1.0.4'
-    compile(group: 'org.eclipse.paho', name: 'org.eclipse.paho.android.service', version: '1.0.2') {
-        exclude module: 'support-v4'
-    }
+
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.larswerkman:HoloColorPicker:1.4'
     compile 'com.android.support:design:25.3.1'
 
     compile 'com.google.android.gms:play-services-analytics:11.0.4'

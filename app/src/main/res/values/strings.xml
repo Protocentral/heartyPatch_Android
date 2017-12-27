@@ -109,7 +109,7 @@
     <!-- Info Activity -->
     <string name="title_activity_info">Info</string>
     <string name="info_item_service">Service</string>
-    <string name="info_help_title">Info List Help</string>
+    <string name="info_help_title">How to read this screen?</string>
 
     <!-- Uart Activity -->
     <string name="title_activity_uart">UART</string>
@@ -268,48 +268,6 @@
     <string name="connectedsettings_bootloaderinstall_messageformat">Download and install bootloader version %s</string>
     <string name="connectedsettings_noexplorer_title">Unavailable</string>
     <string name="connectedsettings_noexplorer_message">File browser app not has not been found on your device. You should install an app like Dropbox, GoogleDrive…</string>
-
-    <!-- Neopixel -->
-    <string name="title_activity_neopixel">Neopixel</string>
-    <string name="neopixel_help_title">Neopixel Help</string>
-
-    <string name="neopixel_sketch_tooltip">Neopixel support requires a custom sketch to be running on your Arduino. You can export this sketch from the app by clicking the INFO icon in the top-right corner.</string>
-
-
-    <string name="neopixel_status">Status:</string>
-
-    <string name="neopixel_status_readytoconnect">Ready to Connect</string>
-    <string name="neopixel_status_notdetected">Not detected</string>
-    <string name="neopixel_status_waitingsetup">Waiting for Setup</string>
-    <string name="neopixel_status_readyforsetup">Ready for Setup</string>
-    <string name="neopixel_status_connected">Connected</string>
-
-    <string name="neopixel_connect">Connect</string>
-
-    <string name="neopixel_picker">Picker:</string>
-    <string name="neopixel_brightness">Brightness:</string>
-
-    <string name="neopixel_colorpicker_setcolor">Set</string>
-
-    <string name="neopixel_boardselector_boards_title">Standard Board Sizes</string>
-    <string name="neopixel_boardselector_custom_title">Custom Board Sizes</string>
-    <string name="neopixel_boardselector_custom_linestrip">Line Strip</string>
-
-    <string name="neopixel_boardselector_enterlinestrip_title">Select line strip length</string>
-    <string name="neopixel_boardselector_enterlinestrip_hint">Enter length</string>
-
-
-    <string name="neopixel_boardtype_types_title">Predefined Pixel Types</string>
-    <string name="neopixel_boardtype_custom_title">Pixel Config Register</string>
-    <string name="neopixel_boardtype_value_title">Decimal Value:</string>
-    <string name="neopixel_boardtype_value_set">Set</string>
-
-
-    <!-- Neopixel Help -->
-    <string name="neopixel_help_export">Export Sketch...</string>
-    <string name="neopixel_help_export_subject">Export Neopixel Sketch</string>
-    <string name="neopixel_help_export_text">Export Neopixel Sketch</string>
-    <string name="neopixel_help_export_chooser_title">Select app for Exporting Sketch</string>
 
 
     <!-- Settings -->

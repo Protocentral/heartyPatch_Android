@@ -7,14 +7,8 @@
         android:id="@+id/action_help"
         android:icon="@drawable/ic_info_outline_menu"
         android:title="@string/action_info"
-        app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/action_connected_settings"
-        android:icon="@drawable/ic_settings_white_24dp"
-        android:title="@string/action_firmwareupdates"
-        app:showAsAction="never"
-        />
+        android:visible="true"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_refreshcache"

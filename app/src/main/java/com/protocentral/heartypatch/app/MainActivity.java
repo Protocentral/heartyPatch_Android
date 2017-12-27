@@ -55,8 +55,6 @@ import android.widget.Toast;
 
 import com.protocentral.heartypatch.R;
 import com.protocentral.heartypatch.app.settings.SettingsActivity;
-import com.protocentral.heartypatch.app.update.FirmwareUpdater;
-import com.protocentral.heartypatch.app.update.ReleasesParser;
 import com.protocentral.heartypatch.ble.BleDevicesScanner;
 import com.protocentral.heartypatch.ble.BleManager;
 import com.protocentral.heartypatch.ble.BleUtils;
@@ -76,7 +74,7 @@ import java.util.UUID;
 import static android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
 
-public class MainActivity extends AppCompatActivity implements BleManager.BleManagerListener, BleUtils.ResetBluetoothAdapterListener, FirmwareUpdater.FirmwareUpdaterListener {
+public class MainActivity extends AppCompatActivity implements BleManager.BleManagerListener, BleUtils.ResetBluetoothAdapterListener {
     // Constants
     private final static String TAG = MainActivity.class.getSimpleName();
     private final static long kMinDelayToUpdateUI = 200;    // in milliseconds
@@ -127,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
     private BleManager mBleManager;
     private boolean mIsScanPaused = true;
     private BleDevicesScanner mScanner;
-    private FirmwareUpdater mFirmwareUpdater;
     private PeripheralList mPeripheralList;
 
     private ArrayList<BluetoothDeviceData> mScannedDevices;
@@ -260,12 +257,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
             boolean disableWifi = sharedPreferences.getBoolean("pref_disableWifi", false);
             boolean updatesEnabled = sharedPreferences.getBoolean("pref_updatesenabled", true);
 
-            // Update SoftwareUpdateManager
-            if (updatesEnabled) {
-                mFirmwareUpdater = new FirmwareUpdater(this, this);
-                mFirmwareUpdater.refreshSoftwareUpdatesDatabase();
-            }
-
             // Turn off wifi
             if (disableWifi) {
                 final boolean isWifiEnabled = BleUtils.isWifiEnabled(this);
@@ -309,6 +300,11 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
             intent.setClass(MainActivity.this, SettingsActivity.class);
             startActivityForResult(intent, kActivityRequestCode_Settings);
             return true;
+        }else if (id == R.id.action_licenses) {
+            Intent intent = new Intent(this, CommonHelpActivity.class);
+            intent.putExtra("title", "About HeartyPatch");
+            intent.putExtra("help", "about.html");
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -727,9 +723,9 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
             boolean updatesEnabled = sharedPreferences.getBoolean("pref_updatesenabled", true);
             if (updatesEnabled) {
                 mLatestCheckedDeviceAddress = null;
-                mFirmwareUpdater.refreshSoftwareUpdatesDatabase();
+                //mFirmwareUpdater.refreshSoftwareUpdatesDatabase();
             } else {
-                mFirmwareUpdater = null;
+                //mFirmwareUpdater = null;
             }
         }
     }
@@ -741,6 +737,9 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
     private void showGettingUpdateInfoState() {
         showConnectionStatus(false);
         showStatusDialog(true, R.string.scan_gettingupdateinfo);
+
+        Log.d(TAG,"Showstaus infostate");
+
     }
 
     private void showStatusDialog(boolean show, int stringId) {
@@ -811,6 +810,7 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
                 Log.d(TAG, "No UART service found. Go to InfoActivity");
                 mComponentToStartWhenConnected = InfoActivity.class;
                 connect(device);
+
             }
         } else {
             Log.w(TAG, "onClickDeviceConnect index does not exist: " + scannedDeviceIndex);
@@ -1099,65 +1099,7 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
     @Override
     public void onServicesDiscovered() {
         Log.d(TAG, "services discovered");
-
-        // Check if there is a failed installation that was stored to retry
-        boolean isFailedInstallationDetected = FirmwareUpdater.isFailedInstallationRecoveryAvailable(this, mBleManager.getConnectedDeviceAddress());
-        if (isFailedInstallationDetected) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(TAG, "Failed installation detected");
-                    // Ask user if should update
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.scan_failedupdatedetected_title)
-                            .setMessage(R.string.scan_failedupdatedetected_message)
-                            .setPositiveButton(R.string.scan_failedupdatedetected_ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    showConnectionStatus(false);        // hide current dialogs because software update will display a dialog
-                                    stopScanning();
-
-                                    mFirmwareUpdater.startFailedInstallationRecovery(MainActivity.this);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    FirmwareUpdater.clearFailedInstallationRecoveryParams(MainActivity.this);
-                                    launchComponentActivity();
-                                }
-                            })
-                            .setCancelable(false)
-                            .show();
-                }
-            });
-        } else {
-            // Check if a firmware update is available
-            boolean isCheckingFirmware = false;
-            if (mFirmwareUpdater != null) {
-                // Don't bother the user waiting for checks if the latest connected device was this one too
-                String deviceAddress = mBleManager.getConnectedDeviceAddress();
-                if (!deviceAddress.equals(mLatestCheckedDeviceAddress)) {
-                    mLatestCheckedDeviceAddress = deviceAddress;
-
-                    // Check if should update device software
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showGettingUpdateInfoState();
-                        }
-                    });
-                    mFirmwareUpdater.checkFirmwareUpdatesForTheCurrentConnectedDevice();        // continues asynchronously in onFirmwareUpdatesChecked
-                    isCheckingFirmware = true;
-                } else {
-                    Log.d(TAG, "Updates: Device already checked previously. Skipping...");
-                }
-            }
-
-            if (!isCheckingFirmware) {
-                onFirmwareUpdatesChecked(false, null, null, null);
-            }
-        }
+        launchComponentActivity();
     }
 
     @Override
@@ -1174,99 +1116,8 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
     }
     // endregion
 
-    // region SoftwareUpdateManagerListener
-    @Override
-    public void onFirmwareUpdatesChecked(boolean isUpdateAvailable, final ReleasesParser.FirmwareInfo latestRelease, FirmwareUpdater.DeviceInfoData deviceInfoData, Map<String, ReleasesParser.BoardInfo> allReleases) {
-        mBleManager.setBleListener(this);           // Restore listener
 
-        if (isUpdateAvailable) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    // Ask user if should update
-                    String message = String.format(getString(R.string.scan_softwareupdate_messageformat), latestRelease.version);
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.scan_softwareupdate_title)
-                            .setMessage(message)
-                            .setPositiveButton(R.string.scan_softwareupdate_install, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    showConnectionStatus(false);        // hide current dialogs because software update will display a dialog
-                                    stopScanning();
-                                    //BluetoothDevice device = mBleManager.getConnectedDevice();
-                                    mFirmwareUpdater.downloadAndInstall(MainActivity.this, latestRelease);
-                                }
-                            })
-                            .setNeutralButton(R.string.scan_softwareupdate_notnow, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    launchComponentActivity();
-                                }
-                            })
-                            .setNegativeButton(R.string.scan_softwareupdate_dontask, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    mFirmwareUpdater.ignoreVersion(latestRelease.version);
-                                    launchComponentActivity();
-                                }
-                            })
-                            .setCancelable(false)
-                            .show();
-                }
-            });
-        } else {
-            Log.d(TAG, "onFirmwareUpdatesChecked: No software update available");
-            launchComponentActivity();
-        }
-    }
 
-    @Override
-    public void onUpdateCancelled() {
-        Log.d(TAG, "Software version installation cancelled");
-
-        mLatestCheckedDeviceAddress = null;
-
-        mScannedDevices.clear();
-        startScan(null);
-    }
-
-    @Override
-    public void onUpdateCompleted() {
-        Log.d(TAG, "Software version installation completed successfully");
-
-        Toast.makeText(this, R.string.scan_softwareupdate_completed, Toast.LENGTH_LONG).show();
-
-        mScannedDevices.clear();
-        startScan(null);
-    }
-
-    @Override
-    public void onUpdateFailed(boolean isDownloadError) {
-        Log.d(TAG, "Software version installation failed");
-        Toast.makeText(this, isDownloadError ? R.string.scan_softwareupdate_downloaderror : R.string.scan_softwareupdate_updateerror, Toast.LENGTH_LONG).show();
-
-        mLatestCheckedDeviceAddress = null;
-
-        mScannedDevices.clear();
-        startScan(null);
-    }
-
-    @Override
-    public void onUpdateDeviceDisconnected() {
-
-        // Update UI
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                onDisconnected();
-
-                mLatestCheckedDeviceAddress = null;
-
-                mScannedDevices.clear();
-                startScan(null);
-            }
-        });
-    }
 
 
     // endregion
@@ -1869,7 +1720,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
         private ArrayList<BluetoothDeviceData> mScannedDevices;
         private Class<?> mComponentToStartWhenConnected;
         private boolean mShouldEnableWifiOnQuit;
-        private FirmwareUpdater mFirmwareUpdater;
         private String mLatestCheckedDeviceAddress;
         private BluetoothDeviceData mSelectedDeviceData;
         //private PeripheralList mPeripheralList;
@@ -1900,14 +1750,10 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
             mScannedDevices = mRetainedDataFragment.mScannedDevices;
             mComponentToStartWhenConnected = mRetainedDataFragment.mComponentToStartWhenConnected;
             mShouldEnableWifiOnQuit = mRetainedDataFragment.mShouldEnableWifiOnQuit;
-            mFirmwareUpdater = mRetainedDataFragment.mFirmwareUpdater;
             mLatestCheckedDeviceAddress = mRetainedDataFragment.mLatestCheckedDeviceAddress;
             mSelectedDeviceData = mRetainedDataFragment.mSelectedDeviceData;
             //mPeripheralList = mRetainedDataFragment.mPeripheralList;
 
-            if (mFirmwareUpdater != null) {
-                mFirmwareUpdater.changedParentActivity(this);       // set the new activity
-            }
         }
     }
 
@@ -1915,7 +1761,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
         mRetainedDataFragment.mScannedDevices = mScannedDevices;
         mRetainedDataFragment.mComponentToStartWhenConnected = mComponentToStartWhenConnected;
         mRetainedDataFragment.mShouldEnableWifiOnQuit = mShouldEnableWifiOnQuit;
-        mRetainedDataFragment.mFirmwareUpdater = mFirmwareUpdater;
         mRetainedDataFragment.mLatestCheckedDeviceAddress = mLatestCheckedDeviceAddress;
         mRetainedDataFragment.mSelectedDeviceData = mSelectedDeviceData;
         //mRetainedDataFragment.mPeripheralList = mPeripheralList;

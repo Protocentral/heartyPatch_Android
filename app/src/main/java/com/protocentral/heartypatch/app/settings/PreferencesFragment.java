@@ -16,8 +16,6 @@ import android.util.Log;
 
 import com.protocentral.heartypatch.BuildConfig;
 import com.protocentral.heartypatch.R;
-import com.protocentral.heartypatch.app.update.FirmwareUpdater;
-
 
 public class PreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     // Log
@@ -51,18 +49,6 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     private void setupSpecialPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        // Update summaries
-        updateEditTextPreferenceSummary("pref_uarttextmaxpackets");
-        updateEditTextPreferenceSummary("pref_updateserver");
-
-        // Set ignored version
-        {
-            String ignoredVersion = sharedPreferences.getString("pref_ignoredversion", null);
-            EditTextPreference etp = (EditTextPreference) findPreference("pref_ignoredversion");
-            etp.setSummary(ignoredVersion);
-            etp.setText(ignoredVersion);
-        }
-
         // Set reset button
         Preference button = findPreference("pref_reset");
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -88,15 +74,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
             }
         });
 
-        // Hide advanced options (if not debug)
-        if (!BuildConfig.DEBUG) {
-            PreferenceCategory category = (PreferenceCategory) findPreference("pref_key_update_settings");
-            Preference updateServerPreference = findPreference("pref_updateserver");
-            category.removePreference(updateServerPreference);
 
-            Preference versionCheckPreference = findPreference("pref_updatesversioncheck");
-            category.removePreference(versionCheckPreference);
-        }
     }
 
     private void initSummary(Preference p) {
@@ -115,36 +93,14 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
             ListPreference listPref = (ListPreference) p;
             p.setSummary(listPref.getEntry());
         } else if (p instanceof EditTextPreference) {
-            updateEditTextPreferenceSummary(p.getKey());
+            //updateEditTextPreferenceSummary(p.getKey());
         } else if (p instanceof MultiSelectListPreference) {
-            EditTextPreference editTextPref = (EditTextPreference) p;
-            p.setSummary(editTextPref.getText());
+            //EditTextPreference editTextPref = (EditTextPreference) p;
+            //p.setSummary(editTextPref.getText());
         }
     }
 
-    private void updateEditTextPreferenceSummary(String key)
-    {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        if (key.equals("pref_uarttextmaxpackets"))
-        {
-            // Set pref_uarttextmaxpackets
-            final int uartTextMaxPackets = getUartTextMaxPackets(getActivity());
-
-            EditTextPreference etp = (EditTextPreference) findPreference("pref_uarttextmaxpackets");
-            String summary = String.format(getString(R.string.settings_uarttextmaxpackets_summary_format), uartTextMaxPackets);
-            etp.setSummary(summary);
-            etp.setText("" + uartTextMaxPackets);
-        }
-        else if (key.equals("pref_updateserver"))
-        {
-            // Set updateserver
-            String updateServer = sharedPreferences.getString("pref_updateserver", FirmwareUpdater.kDefaultUpdateServerUrl);
-            EditTextPreference etp = (EditTextPreference) findPreference("pref_updateserver");
-            etp.setSummary(updateServer);
-            etp.setText(updateServer);
-        }
-    }
 
     public static int getUartTextMaxPackets(Context context) {
 
