@@ -195,7 +195,6 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         try {
             logFile.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         dispFilename.setText("Logging stopped");
@@ -220,7 +219,6 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         try {
             logFile.write(line);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -402,25 +400,6 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
             }
         });
     }
-/*
-    public void startNotify()
-    {
-        BluetoothGattService service = mBleManager.getGattService(elementPath.serviceUUID);
-        if (mBleManager.isCharacteristicNotifiable(service, elementPath.characteristicUUID))
-        {
-            Log.d(TAG, "Notify char");
-
-            ImageButton imageButton = (ImageButton) view;
-            final boolean selected = !imageButton.isSelected();
-            imageButton.setSelected(selected);
-            mBleManager.enableNotification(service, elementPath.characteristicUUID, selected);
-
-            // Button color effect when pressed
-            imageButton.setImageResource(selected ? R.drawable.ic_sync_white_24dp : R.drawable.ic_sync_black_24dp);
-        }
-
-    }
-    */
 
     @Override
     public void onDataAvailable(BluetoothGattCharacteristic characteristic)

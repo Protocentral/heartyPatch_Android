@@ -8,8 +8,8 @@ android {
         applicationId "com.protocentral.heartypatch"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 6
-        versionName "2.3"
+        versionCode 7
+        versionName "2.4"
     }
 
     useLibrary 'org.apache.http.legacy'     // TODO: remove Apache library and use HttpURLConnection (Apache is deprecated since Android 6.0)

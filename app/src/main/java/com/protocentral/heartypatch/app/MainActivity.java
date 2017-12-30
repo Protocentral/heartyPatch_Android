@@ -533,14 +533,16 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
         }
     }*/
 
-    public void onClickExpandFilters(View view) {
+    public void onClickExpandFilters(View view)
+    {
         SharedPreferences preferences = getSharedPreferences(kPreferences, MODE_PRIVATE);
         boolean filtersIsPanelOpen = preferences.getBoolean(kPreferences_filtersPanelOpen, false);
 
         openFiltersPanel(!filtersIsPanelOpen, true);
     }
 
-    public void onClickRemoveFilters(View view) {
+    public void onClickRemoveFilters(View view)
+    {
         mPeripheralList.setDefaultFilters();
         mFiltersNameEditText.setText(mPeripheralList.getFilterName());
         setRssiSliderValue(mPeripheralList.getFilterRssiValue());
