@@ -70,6 +70,13 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import android.os.Environment;
+
 
 import static android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
@@ -82,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
     private static final String kServiceChangedCharacteristic = "00002A05-0000-1000-8000-00805F9B34FB";
 
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
+
+    private static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 1;
 
     private final static String kPreferences = "MainActivity_prefs";
     private final static String kPreferences_filtersPanelOpen = "filtersPanelOpen";
@@ -414,6 +423,19 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
                 builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     public void onDismiss(DialogInterface dialog) {
                         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_FINE_LOCATION);
+                    }
+                });
+                builder.show();
+            }
+
+            if (this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("This app needs external storage access");
+                builder.setMessage("HeartyPatch needs permission to write data log files");
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    public void onDismiss(DialogInterface dialog) {
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE_EXTERNAL_STORAGE);
                     }
                 });
                 builder.show();
@@ -1116,12 +1138,6 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
     }
     // endregion
 
-
-
-
-
-    // endregion
-
     // region Helpers
     private class BluetoothDeviceData {
         BluetoothDevice device;
@@ -1403,6 +1419,9 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
     }
 
     // endregion
+
+
+
 
 
     // region adapters

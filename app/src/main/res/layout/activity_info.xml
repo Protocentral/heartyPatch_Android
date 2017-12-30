@@ -66,37 +66,23 @@
         android:layout_width="match_parent"
         android:layout_height="156dp" />
 
-    <Space
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="27dp" />
+        android:layout_height="wrap_content"
+        android:text="Heart Rate"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.49"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_weight="0.49"
-            android:text="Heart Rate"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="24sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/HRTextView"
             android:layout_width="226dp"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_weight="0.49"
             android:text="40"
             android:textAlignment="center"
@@ -119,13 +105,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.49"
+            android:gravity="top"
             android:orientation="vertical">
 
             <TextView
@@ -151,8 +138,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.49"
+            android:gravity="top"
             android:orientation="vertical">
 
             <TextView
@@ -178,8 +166,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.49"
+            android:gravity="top"
             android:orientation="vertical">
 
             <TextView
@@ -193,7 +182,7 @@
             <TextView
                 android:id="@+id/SDNNTextView"
                 android:layout_width="match_parent"
-                android:layout_height="83dp"
+                android:layout_height="wrap_content"
                 android:text="40"
                 android:textAlignment="center"
                 android:textColor="@android:color/holo_green_light"
@@ -206,6 +195,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.49"
+            android:gravity="top"
             android:orientation="vertical">
 
             <TextView
@@ -234,30 +224,36 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.49"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:orientation="horizontal"></LinearLayout>
 
-            <Switch
-                android:id="@+id/LogToggle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:checked="false"
-                android:showText="true"
-                android:splitTrack="false"
-                android:text="Log data:"
-                android:textColor="@android:color/background_light"
-                android:textOff="OFF"
-                android:textOn="ON"
-                android:textSize="24sp"
-                android:visibility="gone" />
-        </LinearLayout>
+        <Switch
+            android:id="@+id/logToggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:splitTrack="false"
+            android:text="Record Data"
+            android:textColor="@android:color/background_light"
+            android:textOff="OFF"
+            android:textOn="ON"
+            android:textSize="24sp" />
 
+        <TextView
+            android:id="@+id/textFilename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Logging not started"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textSize="12sp" />
     </LinearLayout>
 
 </LinearLayout>

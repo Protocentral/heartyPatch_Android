@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothGattService;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -89,6 +90,11 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
     private LineGraphSeries<DataPoint> HRseries;
     private int lineplotxcount=0;
 
+    private BufferedWriter logFile;
+    private boolean recordingLog = false;
+    private TextView dispFilename;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,17 +146,20 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         HRseries.setThickness(2);
 
 
-        Switch toggleLog = (Switch) findViewById(R.id.LogToggle);
+        Switch toggleLog = (Switch) findViewById(R.id.logToggle);
         toggleLog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     onStartLog();
+                    startDataLog();
                 } else {
                     // The toggle is disabled
-                    onStopLog();
+                    //onStopLog();
+                    stopRecording();
                 }
             }
         });
+        dispFilename = (TextView) findViewById(R.id.textFilename);
     }
 
     @Override
@@ -159,6 +168,83 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
 
         // Setup listeners
         mBleManager.setBleListener(this);
+    }
+
+    private void startDataLog()
+    {
+        // Prepare data storage
+        File directory = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String name = "heartypatch_" + System.currentTimeMillis() + ".csv";
+        File filename = new File(directory, name);
+        try {
+            logFile = new BufferedWriter(new FileWriter(filename));
+        } catch (IOException e) {
+
+            Log.d(TAG,"Error creating file");
+            e.printStackTrace();
+        }
+        writeLog("HeartyPatch data log file");
+        recordingLog=true;
+        dispFilename.setText("Recording to: Download/" +name);
+    }
+
+    private void stopRecording()
+    {
+        recordingLog=false;
+        try {
+            logFile.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        dispFilename.setText("Logging stopped");
+    }
+
+    private void writeLog(String tag, String[] values)
+    {
+        if (logFile == null) {
+            return;
+        }
+
+        String line = "";
+        if (values != null)
+        {
+            for (String value : values)
+            {
+                line += "," + value;
+            }
+        }
+        line = Long.toString(System.currentTimeMillis()) + "," + line + "\n";
+
+        try {
+            logFile.write(line);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void writeLog(String tag, float[] values)
+    {
+        String[] array = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            array[i] = Float.toString(values[i]);
+        }
+        writeLog(tag, array);
+    }
+
+    private void writeLog(String tag, double[] values) {
+        String[] array = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            array[i] = Double.toString(values[i]);
+        }
+        writeLog(tag, array);
+    }
+
+    private void writeLog(String tag)
+    {
+        writeLog(tag, (String[]) null);
     }
 
     @Override
@@ -381,6 +467,10 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
 
             globalHR = heartRate; //valueString;
            // globalRR = String.format("%d", RRI); //valueString;
+            if(recordingLog==true)
+            {
+                writeLog("", new float[] {globalHR, globalMean,globalSDNN, globalPNN, globalRMSSD});
+            }
         }
 
         if (UUID_BATTERY_LEVEL.equals(characteristic.getUuid()))
@@ -395,6 +485,8 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
             globalSDNN = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 4);
             globalPNN = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 6);
             globalRMSSD = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 10);
+
+
 
         }
 
