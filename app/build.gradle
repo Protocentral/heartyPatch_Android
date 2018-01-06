@@ -41,9 +41,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.0.4'
     compile 'com.google.android.gms:play-services-vision:11.0.4'
 
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
-    compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
-
     compile 'com.commonsware.cwac:provider:0.5.1'
     compile 'com.jjoe64:graphview:4.2.1'
 }
