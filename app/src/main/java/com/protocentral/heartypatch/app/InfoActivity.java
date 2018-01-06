@@ -27,6 +27,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.CompoundButton;
 
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import com.protocentral.heartypatch.R;
 import com.protocentral.heartypatch.ble.BleManager;
