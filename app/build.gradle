@@ -41,6 +41,10 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.0.4'
     compile 'com.google.android.gms:play-services-vision:11.0.4'
 
+    compile(group: 'org.eclipse.paho', name: 'org.eclipse.paho.android.service', version: '1.0.2') {
+        exclude module: 'support-v4'
+    }
+
     compile 'com.commonsware.cwac:provider:0.5.1'
     compile 'com.jjoe64:graphview:4.2.1'
 }

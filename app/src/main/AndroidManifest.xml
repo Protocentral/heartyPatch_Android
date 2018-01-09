@@ -53,6 +53,15 @@
         </activity>
 
         <activity
+            android:name=".mqtt.MqttSettingsActivity"
+            android:label="@string/title_activity_mqtt"
+            android:parentActivityName="com.protocentral.heartypatch.app.InfoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.protocentral.heartypatch.app.InfoActivity" />
+        </activity>
+
+        <activity
             android:name=".app.CommonHelpActivity"
             android:parentActivityName=".app.InfoActivity"
             android:screenOrientation="fullUser">

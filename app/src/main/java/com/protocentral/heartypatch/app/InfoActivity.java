@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,8 +20,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -31,6 +34,7 @@ import com.protocentral.heartypatch.R;
 import com.protocentral.heartypatch.ble.BleManager;
 import com.protocentral.heartypatch.ble.BleUtils;
 import com.protocentral.heartypatch.ble.KnownUUIDs;
+import com.protocentral.heartypatch.mqtt.MqttSettingsActivity;
 import com.protocentral.heartypatch.ui.utils.ExpandableHeightListView;
 
 import java.io.FileInputStream;
@@ -49,8 +53,10 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
     // Log
     private final static String TAG = InfoActivity.class.getSimpleName();
 
+
     // Activity request codes (used for onActivityResult)
     private static final int kActivityRequestCode_ConnectedSettingsActivity = 0;
+    private static final int kActivityRequestCode_MqttSettingsActivity = 1;
 
     // Constants
     private final static int kDataFormatCount = 2;
@@ -92,7 +98,7 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
     private BufferedWriter logFile;
     private boolean recordingLog = false;
     private TextView dispFilename;
-
+    private Button buttonMQTTSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +165,20 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
             }
         });
         dispFilename = (TextView) findViewById(R.id.textFilename);
+
+        buttonMQTTSettings = (Button) findViewById(R.id.buttonMQTTSettings);
+        buttonMQTTSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dismiss keyboard
+                Context context = InfoActivity.this;
+                dismissKeyboard(v);
+
+                Intent intent = new Intent(InfoActivity.this, MqttSettingsActivity.class);
+                startActivityForResult(intent, kActivityRequestCode_MqttSettingsActivity);
+
+            }
+        });
     }
 
     @Override
@@ -277,6 +297,11 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void dismissKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void startHelp() {
@@ -456,7 +481,7 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
             final int BatteryLevel = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
             globalBattery = BatteryLevel;
         }
-        
+
         if (UUID_CUSTOM_HRV.equals(characteristic.getUuid()))
         {
             globalMean = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0);

@@ -84,10 +84,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.49"
-            android:text="40"
+            android:text="..."
             android:textAlignment="center"
             android:textColor="@android:color/holo_orange_light"
-            android:textSize="110sp"
+            android:textSize="80sp"
             android:textStyle="bold" />
 
         <TextView
@@ -128,7 +128,7 @@
                 android:id="@+id/MeanRRTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="40"
+                android:text="..."
                 android:textAlignment="center"
                 android:textColor="@android:color/holo_orange_light"
                 android:textSize="24sp"
@@ -156,7 +156,7 @@
                 android:id="@+id/PNNTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="40"
+                android:text="..."
                 android:textAlignment="center"
                 android:textColor="@android:color/holo_blue_bright"
                 android:textSize="24sp"
@@ -183,7 +183,7 @@
                 android:id="@+id/SDNNTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="40"
+                android:text="..."
                 android:textAlignment="center"
                 android:textColor="@android:color/holo_green_light"
                 android:textSize="24sp"
@@ -211,7 +211,7 @@
                 android:id="@+id/RMSSDTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="40"
+                android:text="..."
                 android:textAlignment="center"
                 android:textColor="@android:color/holo_blue_light"
                 android:textSize="24sp"
@@ -224,47 +224,91 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_weight="1" />
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
+
+            <Switch
+                android:id="@+id/logToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:splitTrack="false"
+                android:text="Record Data"
+                android:textColor="@android:color/background_light"
+                android:textOff="OFF"
+                android:textOn="ON"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textFilename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Logging not started"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_light"
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <Switch
-            android:id="@+id/logToggle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:splitTrack="false"
-            android:text="Record Data"
-            android:textColor="@android:color/background_light"
-            android:textOff="OFF"
-            android:textOn="ON"
-            android:textSize="24sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textFilename"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Logging not started"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="12sp" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textMQTTStatus2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="MQTT"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="toggleMQTT"
+                android:textOff="MQTT Off"
+                android:textOn="MQTT On"
+                tools:text="MQTT" />
+
+            <Button
+                android:id="@+id/buttonMQTTSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="MQTT Settings" />
+
+            <TextView
+                android:id="@+id/textMQTTStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Not Connected"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_light"
+                android:textSize="12sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
