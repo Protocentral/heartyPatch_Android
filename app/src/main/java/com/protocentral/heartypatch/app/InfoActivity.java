@@ -30,6 +30,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.CompoundButton;
 
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
 import com.protocentral.heartypatch.R;
 import com.protocentral.heartypatch.ble.BleManager;
 import com.protocentral.heartypatch.ble.BleUtils;
@@ -488,8 +494,10 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
             globalSDNN = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 4);
             globalPNN = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 6);
             globalRMSSD = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 10);
-        }
 
+
+
+        }
 
         //valueTextView.setVisibility(valueString == null ? View.GONE : View.VISIBLE);
 
