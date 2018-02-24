@@ -41,14 +41,13 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.0.4'
     compile 'com.google.android.gms:play-services-vision:11.0.4'
 
-<<<<<<< HEAD
+
     compile(group: 'org.eclipse.paho', name: 'org.eclipse.paho.android.service', version: '1.0.2') {
         exclude module: 'support-v4'
     }
-=======
+
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
     compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
->>>>>>> parent of 7c40557... Fixed build error
 
     compile 'com.commonsware.cwac:provider:0.5.1'
     compile 'com.jjoe64:graphview:4.2.1'
