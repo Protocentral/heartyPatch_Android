@@ -96,6 +96,7 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
     private float globalSDNN=0;
     private float globalPNN=0;
     private int globalStress=0;
+    private int globalArrDetect=0;
     private float globalRMSSD=0;
 
     private LineGraphSeries<DataPoint> HRseries;
@@ -494,9 +495,7 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
             globalSDNN = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 4);
             globalPNN = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 6);
             globalRMSSD = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 10);
-
-
-
+            globalArrDetect = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 12);
         }
 
         //valueTextView.setVisibility(valueString == null ? View.GONE : View.VISIBLE);
@@ -515,6 +514,14 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
 
                 TextView HRTextView = (TextView) findViewById(R.id.HRTextView);
                 HRTextView.setText( String.format("%d",globalHR));
+
+                TextView ArrTextView = (TextView) findViewById(R.id.txtRhythm);
+                if(globalArrDetect==0) {
+                    ArrTextView.setText("Normal");
+                } else
+                {
+                    ArrTextView.setText("Abnormal");
+                }
 
                 TextView BatteryTextView = (TextView) findViewById(R.id.BatteryTextView);
                 BatteryTextView.setText( String.format("%d",globalBattery));
