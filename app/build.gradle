@@ -44,7 +44,7 @@ dependencies {
         exclude group: 'com.android.support', module:'support-v4'
     }
 
-    compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
 
     implementation ('com.commonsware.cwac:provider:0.5.1') {
