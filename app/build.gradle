@@ -1,18 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.protocentral.heartypatch"
         minSdkVersion 19
-        targetSdkVersion 25
-        versionCode 7
-        versionName "2.4"
+        targetSdkVersion 27
+        versionCode 8
+        versionName "2.5"
     }
-
-    useLibrary 'org.apache.http.legacy'     // TODO: remove Apache library and use HttpURLConnection (Apache is deprecated since Android 6.0)
 
     aaptOptions {
         noCompress "zip"
@@ -32,23 +30,27 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
 
-    compile 'com.google.android.gms:play-services-analytics:11.0.4'
-    compile 'com.google.android.gms:play-services-location:11.0.4'
-    compile 'com.google.android.gms:play-services-vision:11.0.4'
+    implementation 'com.google.android.gms:play-services-analytics:16.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-vision:15.0.2'
 
 
-    compile(group: 'org.eclipse.paho', name: 'org.eclipse.paho.android.service', version: '1.0.2') {
-        exclude module: 'support-v4'
+    implementation(group: 'org.eclipse.paho', name: 'org.eclipse.paho.android.service', version: '1.1.1') {
+        exclude group: 'com.android.support', module:'support-v4'
     }
 
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
     compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
 
-    compile 'com.commonsware.cwac:provider:0.5.1'
-    compile 'com.jjoe64:graphview:4.2.1'
+    implementation ('com.commonsware.cwac:provider:0.5.1') {
+                exclude group: 'com.android.support'
+    }
+    implementation ('com.jjoe64:graphview:4.2.1'){
+        exclude group: 'com.android.support'
+    }
 }
