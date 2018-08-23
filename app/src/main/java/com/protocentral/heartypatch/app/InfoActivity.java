@@ -517,10 +517,12 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
 
                 TextView ArrTextView = (TextView) findViewById(R.id.txtRhythm);
                 if(globalArrDetect==0) {
-                    ArrTextView.setText("Normal");
+                    ArrTextView.setText("     NORMAL");
+                    ArrTextView.setBackgroundColor(Color.argb(150,4,122,55));
                 } else
                 {
-                    ArrTextView.setText("Abnormal");
+                    ArrTextView.setText("     ABNORMAL");
+                    ArrTextView.setBackgroundColor(Color.RED);
                 }
 
                 TextView BatteryTextView = (TextView) findViewById(R.id.BatteryTextView);
