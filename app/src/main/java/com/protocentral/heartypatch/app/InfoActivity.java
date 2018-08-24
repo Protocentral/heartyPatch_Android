@@ -513,16 +513,24 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
                 updateUI();
 
                 TextView HRTextView = (TextView) findViewById(R.id.HRTextView);
-                HRTextView.setText( String.format("%d",globalHR));
+                HRTextView.setText( String.format("%d",globalRR));
 
                 TextView ArrTextView = (TextView) findViewById(R.id.txtRhythm);
-                if(globalArrDetect==0) {
-                    ArrTextView.setText("     NORMAL");
-                    ArrTextView.setBackgroundColor(Color.argb(150,4,122,55));
-                } else
+
+                switch (globalArrDetect)
                 {
-                    ArrTextView.setText("     ABNORMAL");
-                    ArrTextView.setBackgroundColor(Color.RED);
+                    case 0x1f:
+                        ArrTextView.setText("     NORMAL");
+                        ArrTextView.setBackgroundColor(Color.argb(150,4,122,55));
+                        break;
+                    case 0xff:
+                        ArrTextView.setText("     ABNORMAL");
+                        ArrTextView.setBackgroundColor(Color.RED);
+                        break;
+                    default:
+                        ArrTextView.setText("     UNKNOWN");
+                        ArrTextView.setBackgroundColor(Color.YELLOW);
+
                 }
 
                 TextView BatteryTextView = (TextView) findViewById(R.id.BatteryTextView);
