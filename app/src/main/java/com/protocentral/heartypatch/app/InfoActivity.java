@@ -469,14 +469,14 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
                 Log.d("akw", "RRI present");
             }
             final int heartRate = characteristic.getIntValue(format, 1);
-           // final int RRI = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 2);
+            final int RRI = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 2);
             Log.d(TAG, String.format("Received heart rate: %d", heartRate));
            // Log.d(TAG, String.format("Received RRI: %d", RRI));
             HRseries.appendData(new DataPoint(lineplotxcount++, heartRate), true, 40);
 //            HRseries.resetData()
 
             globalHR = heartRate; //valueString;
-           // globalRR = String.format("%d", RRI); //valueString;
+            globalRR = RRI; //valueString;
             if(recordingLog==true)
             {
                 writeLog("", new float[] {globalHR, globalMean,globalSDNN, globalPNN, globalRMSSD});
