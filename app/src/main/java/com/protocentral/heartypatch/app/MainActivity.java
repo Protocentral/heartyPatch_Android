@@ -1321,11 +1321,8 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
         {
 
             ArrayList<BluetoothDeviceData> peripherals = (ArrayList<BluetoothDeviceData>) mScannedDevices.clone();
-<<<<<<< HEAD
             mFilterName = "atch";
-=======
-            mFilterName = "H";
->>>>>>> c6f593a69dbcdfbc41b44df5194037dea2ec479f
+
             // Sort devices alphabetically
             Collections.sort(peripherals, new Comparator<BluetoothDeviceData>() {
                 @Override

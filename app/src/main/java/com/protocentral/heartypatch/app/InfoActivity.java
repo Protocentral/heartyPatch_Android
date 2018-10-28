@@ -482,10 +482,7 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
 
             globalHR = heartRate; //valueString;
             globalRR = RRI; //valueString;
-<<<<<<< HEAD
 
-=======
->>>>>>> c6f593a69dbcdfbc41b44df5194037dea2ec479f
             if(recordingLog==true)
             {
                 writeLog("", new float[] {globalHR, globalMean,globalSDNN, globalPNN, globalRMSSD});
@@ -532,29 +529,12 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
                 HRTextView.setText( String.format("%d",globalRR));
 
                 TextView ArrTextView = (TextView) findViewById(R.id.txtRhythm);
-<<<<<<< HEAD
+
                 if(globalArrDetect==0xff) {
                     ArrTextView.setText("Abnormal");
                 } else
                 {
                     ArrTextView.setText("Normal");
-=======
-
-                switch (globalArrDetect)
-                {
-                    case 0x1f:
-                        ArrTextView.setText("     NORMAL");
-                        ArrTextView.setBackgroundColor(Color.argb(150,4,122,55));
-                        break;
-                    case 0xff:
-                        ArrTextView.setText("     ABNORMAL");
-                        ArrTextView.setBackgroundColor(Color.RED);
-                        break;
-                    default:
-                        ArrTextView.setText("     UNKNOWN");
-                        ArrTextView.setBackgroundColor(Color.YELLOW);
-
->>>>>>> c6f593a69dbcdfbc41b44df5194037dea2ec479f
                 }
 
                 TextView BatteryTextView = (TextView) findViewById(R.id.BatteryTextView);

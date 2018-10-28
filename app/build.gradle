@@ -38,38 +38,23 @@ repositories {
 }
 
 dependencies {
-<<<<<<< HEAD
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation 'com.android.support:appcompat-v7:27.0.1'
     implementation 'com.android.support:design:27.0.1'
+
     implementation 'com.google.android.gms:play-services-analytics:11.0.4'
     implementation 'com.google.android.gms:play-services-location:11.0.4'
     implementation 'com.google.android.gms:play-services-vision:11.0.4'
+
+
     implementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
-        exclude module: 'support-v4'
-    }
-    //compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
-    //compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
-    implementation('com.commonsware.cwac:provider:0.5.1') {
-        exclude group: 'com.android.support'
-=======
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
-
-    implementation 'com.google.android.gms:play-services-analytics:16.0.1'
-    implementation 'com.google.android.gms:play-services-location:15.0.1'
-    implementation 'com.google.android.gms:play-services-vision:15.0.2'
-
-
-    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
         exclude module: 'support-v4'
     }
 
     implementation ('com.commonsware.cwac:provider:0.5.1') {
                 exclude group: 'com.android.support'
->>>>>>> c6f593a69dbcdfbc41b44df5194037dea2ec479f
     }
     implementation('com.jjoe64:graphview:4.2.1') {
         exclude group: 'com.android.support'

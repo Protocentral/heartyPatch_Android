@@ -1,4 +1,4 @@
-//-level build file where you can add configuration options common to all sub-projects/modules.
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     repositories {
@@ -6,11 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-<<<<<<< HEAD
         classpath 'com.android.tools.build:gradle:3.2.1'
-=======
-        classpath 'com.android.tools.build:gradle:3.1.4'
->>>>>>> c6f593a69dbcdfbc41b44df5194037dea2ec479f
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
