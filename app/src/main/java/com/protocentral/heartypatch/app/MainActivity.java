@@ -1322,6 +1322,7 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
 
             ArrayList<BluetoothDeviceData> peripherals = (ArrayList<BluetoothDeviceData>) mScannedDevices.clone();
             mFilterName = "atch";
+
             // Sort devices alphabetically
             Collections.sort(peripherals, new Comparator<BluetoothDeviceData>() {
                 @Override
@@ -1637,6 +1638,7 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
             });
             */
 
+
             holder.connectButton.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -1647,6 +1649,7 @@ public class MainActivity extends AppCompatActivity implements BleManager.BleMan
                     return false;
                 }
             });
+
 
 
             BluetoothDeviceData deviceData = mFilteredPeripherals.get(groupPosition);
