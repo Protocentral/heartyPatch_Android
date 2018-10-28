@@ -116,27 +116,33 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.49"
             android:text="Rhythm:"
-            android:textColor="#ffffff"
             android:textAlignment="center"
-            android:textSize="18sp"/>
+            android:textColor="#ffffff"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/txtRhythm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.49"
-            android:text="Unknown"
-            android:textAlignment="textEnd"
+            android:ellipsize="middle"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="        Unknown"
+            android:textAlignment="center"
             android:textColor="#ffffff"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
+
+
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -266,6 +272,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Position: ---"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
 
             <Switch
                 android:id="@+id/logToggle"

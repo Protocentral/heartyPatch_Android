@@ -75,6 +75,9 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
     public final static UUID UUID_CUSTOM_HRV =
             UUID.fromString("01bfa86f-970f-8d96-d44d-9023c47faddc");
 
+    public final static UUID UUID_CUSTOM_POSITION =
+            UUID.fromString("000000a2-0000-1000-8000-00805f9b34fb");
+
     // UI
     private ExpandableListView mInfoListView;
     private ExpandableListAdapter mInfoListAdapter;
@@ -98,6 +101,7 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
     private int globalStress=0;
     private int globalArrDetect=0;
     private float globalRMSSD=0;
+    private int globalPosition=0;
 
     private LineGraphSeries<DataPoint> HRseries;
     private int lineplotxcount=0;
@@ -441,8 +445,8 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         byte[] data = characteristic.getValue();
         mValuesMap.put(key, data);
 
-        //Log.d("akw", "BT data recv");
-        //Log.d("akw", characteristic.getUuid().toString());
+        Log.d("akw", "BT data recv");
+        Log.d("akw", characteristic.getUuid().toString());
 
         if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid()))
         {
@@ -468,15 +472,20 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
 
                 Log.d("akw", "RRI present");
             }
+
             final int heartRate = characteristic.getIntValue(format, 1);
-           // final int RRI = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 2);
+            final int RRI = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 2);
             Log.d(TAG, String.format("Received heart rate: %d", heartRate));
-           // Log.d(TAG, String.format("Received RRI: %d", RRI));
+            Log.d(TAG, String.format("Received RRI: %d", RRI));
             HRseries.appendData(new DataPoint(lineplotxcount++, heartRate), true, 40);
 //            HRseries.resetData()
 
             globalHR = heartRate; //valueString;
-           // globalRR = String.format("%d", RRI); //valueString;
+            globalRR = RRI; //valueString;
+<<<<<<< HEAD
+
+=======
+>>>>>>> c6f593a69dbcdfbc41b44df5194037dea2ec479f
             if(recordingLog==true)
             {
                 writeLog("", new float[] {globalHR, globalMean,globalSDNN, globalPNN, globalRMSSD});
@@ -487,6 +496,13 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         {
             final int BatteryLevel = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
             globalBattery = BatteryLevel;
+        }
+
+        if (UUID_CUSTOM_POSITION.equals(characteristic.getUuid()))
+        {
+            final int Position = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+            globalPosition = Position;
+            Log.d("akw", "Position received:"+Position);
         }
 
         if (UUID_CUSTOM_HRV.equals(characteristic.getUuid()))
@@ -513,14 +529,32 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
                 updateUI();
 
                 TextView HRTextView = (TextView) findViewById(R.id.HRTextView);
-                HRTextView.setText( String.format("%d",globalHR));
+                HRTextView.setText( String.format("%d",globalRR));
 
                 TextView ArrTextView = (TextView) findViewById(R.id.txtRhythm);
-                if(globalArrDetect==0) {
-                    ArrTextView.setText("Normal");
+<<<<<<< HEAD
+                if(globalArrDetect==0xff) {
+                    ArrTextView.setText("Abnormal");
                 } else
                 {
-                    ArrTextView.setText("Abnormal");
+                    ArrTextView.setText("Normal");
+=======
+
+                switch (globalArrDetect)
+                {
+                    case 0x1f:
+                        ArrTextView.setText("     NORMAL");
+                        ArrTextView.setBackgroundColor(Color.argb(150,4,122,55));
+                        break;
+                    case 0xff:
+                        ArrTextView.setText("     ABNORMAL");
+                        ArrTextView.setBackgroundColor(Color.RED);
+                        break;
+                    default:
+                        ArrTextView.setText("     UNKNOWN");
+                        ArrTextView.setBackgroundColor(Color.YELLOW);
+
+>>>>>>> c6f593a69dbcdfbc41b44df5194037dea2ec479f
                 }
 
                 TextView BatteryTextView = (TextView) findViewById(R.id.BatteryTextView);
@@ -537,6 +571,9 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
 
                 TextView RMSSDTextView = (TextView) findViewById(R.id.RMSSDTextView);
                 RMSSDTextView.setText( String.format("%.1f",(globalRMSSD/100)));
+
+                TextView PositionTextView = (TextView) findViewById(R.id.textPosition);
+                PositionTextView.setText( String.format("Position: %d",(globalPosition)));
 
             }
         });

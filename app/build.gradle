@@ -1,21 +1,26 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword 'open1234'
+            storeFile file('/Users/ashwinkwhitchurch/Dropbox/akw-newkey')
+            storePassword 'open1234'
+        }
+    }
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
-
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.protocentral.heartypatch"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 8
-        versionName "2.5"
+        versionCode 9
+        versionName "2.6"
     }
-
     aaptOptions {
         noCompress "zip"
     }
-
     buildTypes {
         release {
             minifyEnabled true
@@ -27,9 +32,27 @@ android {
 repositories {
     maven { url "https://repo.eclipse.org/content/repositories/paho-releases/" }
     maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
+    maven {
+        url 'https://www.jitpack.io'
+    }
 }
 
 dependencies {
+<<<<<<< HEAD
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.0.1'
+    implementation 'com.android.support:design:27.0.1'
+    implementation 'com.google.android.gms:play-services-analytics:11.0.4'
+    implementation 'com.google.android.gms:play-services-location:11.0.4'
+    implementation 'com.google.android.gms:play-services-vision:11.0.4'
+    implementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+        exclude module: 'support-v4'
+    }
+    //compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
+    //compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
+    implementation('com.commonsware.cwac:provider:0.5.1') {
+        exclude group: 'com.android.support'
+=======
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -40,17 +63,15 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:15.0.2'
 
 
-    implementation(group: 'org.eclipse.paho', name: 'org.eclipse.paho.android.service', version: '1.1.1') {
-        exclude group: 'com.android.support', module:'support-v4'
+    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+        exclude module: 'support-v4'
     }
-
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.0.2'
 
     implementation ('com.commonsware.cwac:provider:0.5.1') {
                 exclude group: 'com.android.support'
+>>>>>>> c6f593a69dbcdfbc41b44df5194037dea2ec479f
     }
-    implementation ('com.jjoe64:graphview:4.2.1'){
+    implementation('com.jjoe64:graphview:4.2.1') {
         exclude group: 'com.android.support'
     }
 }
