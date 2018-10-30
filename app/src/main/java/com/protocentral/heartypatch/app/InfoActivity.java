@@ -214,7 +214,9 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
             Log.d(TAG,"Error creating file");
             e.printStackTrace();
         }
-        writeLog("HeartyPatch data log file");
+        //writeLog("HeartyPatch data log file");
+        writeLogHeader();
+
         recordingLog=true;
         dispFilename.setText("Recording to: Download/" +name);
     }
@@ -241,10 +243,12 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
         {
             for (String value : values)
             {
-                line += "," + value;
+                line += value + ",";
             }
         }
-        line = Long.toString(System.currentTimeMillis()) + "," + line + "\n";
+        //line = Long.toString(System.currentTimeMillis()) + "," + line + "\n";
+
+        line = line + "\n";
 
         try {
             logFile.write(line);
@@ -274,6 +278,21 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
     {
         writeLog(tag, (String[]) null);
     }
+
+    private void writeLogHeader()
+    {
+        String line = "RRI,Mean RR-I, SDNN, PNN50, RMSSD\n";
+
+        try
+        {
+            logFile.write(line);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onDestroy() {
@@ -483,10 +502,12 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
             globalHR = heartRate; //valueString;
             globalRR = RRI; //valueString;
 
+            /*
             if(recordingLog==true)
             {
                 writeLog("", new float[] {globalHR, globalMean,globalSDNN, globalPNN, globalRMSSD});
             }
+            */
         }
 
         if (UUID_BATTERY_LEVEL.equals(characteristic.getUuid()))
@@ -554,6 +575,11 @@ public class InfoActivity extends AppCompatActivity implements BleManager.BleMan
 
                 TextView PositionTextView = (TextView) findViewById(R.id.textPosition);
                 PositionTextView.setText( String.format("Position: %d",(globalPosition)));
+
+                if(recordingLog==true)
+                {
+                    writeLog("", new float[] {globalRR, (globalMean/100),(globalSDNN/100), (globalPNN/100), (globalRMSSD/100)});
+                }
 
             }
         });
